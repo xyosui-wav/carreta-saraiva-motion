@@ -9,7 +9,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="BeatsMotionCreatives"
         component={BeatsMotionCreatives}
-        durationInFrames={820} // ~27 seconds
+        durationInFrames={750} // 25 seconds (5s + 7s + 6s + 7s)
         fps={30}
         width={1080}
         height={1920}

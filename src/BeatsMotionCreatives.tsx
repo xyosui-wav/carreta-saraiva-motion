@@ -18,18 +18,58 @@ const FONTS = {
 };
 
 // =====================
-// CONFIGURATION - EDIT THIS FOR YOUR KIT
+// BILINGUAL SUPPORT
 // =====================
-const PRODUCT_NAME = "WAVE DETECTOR";
-const PRODUCT_SUBTITLE = "VOL. 1";
-const HIGHLIGHT_TEXT = "(+10) BEATS";
-const CTA_TEXT = "OUT NOW";
+type Lang = "en" | "pt";
 
+const TRANSLATIONS = {
+    en: {
+        productName: "WAVE DETECTOR",
+        productSubtitle: "VOL. 1",
+        highlightText: "(+10) BEATS",
+        ctaText: "NOW AVAILABLE",
+        tagline: "PREMIUM BEATS COLLECTION",
+        limitedEdition: "🔥 LIMITED EDITION",
+        exclusive: "🔥 EXCLUSIVE",
+        exclusiveLabel: "⚡ EXCLUSIVE",
+        produceMusic: "PRODUCE PROFESSIONAL\nMUSIC",
+        folderList: [{ name: "100% Royalty-Free", icon: "🔥" }],
+        headerLine1: "AND",
+        headerLine2: "MUCH MORE!",
+        allIncluded: "ALL INCLUDED",
+        beatsLabel: "BEATS",
+        beatsSubLabel: "High Quality & Rare",
+        fireRare: "🔥 FIRE & RARE",
+        plusBeats: "+10 BEATS",
+        ctaLine1: "👥 TAG",
+        ctaLine2: "2 RAPPER\nFRIENDS",
+        ctaLine3: "TO GET THE PACK 🎁",
+    },
+    pt: {
+        productName: "WAVE DETECTOR",
+        productSubtitle: "VOL. 1",
+        highlightText: "(+10) BEATS",
+        ctaText: "DISPONÍVEL AGORA",
+        tagline: "COLEÇÃO PREMIUM DE BEATS",
+        limitedEdition: "🔥 EDIÇÃO LIMITADA",
+        exclusive: "🔥 EXCLUSIVO",
+        exclusiveLabel: "⚡ EXCLUSIVO",
+        produceMusic: "PRODUZA MÚSICA\nPROFISSIONAL",
+        folderList: [{ name: "100% Livre de Royalties", icon: "🔥" }],
+        headerLine1: "E",
+        headerLine2: "MUITO MAIS!",
+        allIncluded: "TUDO INCLUÍDO",
+        beatsLabel: "BEATS",
+        beatsSubLabel: "Alta Qualidade & Raros",
+        fireRare: "🔥 FOGO & RAROS",
+        plusBeats: "+10 BEATS",
+        ctaLine1: "👥 MARQUE",
+        ctaLine2: "2 AMIGOS\nRAPPERS",
+        ctaLine3: "PARA RECEBER O PACK 🎁",
+    },
+} as const;
 
-
-const FOLDER_LIST = [
-    { name: "10+ Beats", icon: "🔥" }
-];
+type Translations = typeof TRANSLATIONS[Lang];
 
 // Color Palette (matching cover - thermal green style)
 const COLORS = {
@@ -47,7 +87,7 @@ const COLORS = {
 // =====================
 // SEGMENT 2: COVER SHOWCASE (Enhanced Premium)
 // =====================
-const CoverShowcase: React.FC = () => {
+const CoverShowcase: React.FC<{ t: Translations }> = ({ t }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
@@ -88,7 +128,7 @@ const CoverShowcase: React.FC = () => {
     const borderLightAngle = (frame * 4) % 360;
 
     // Tagline letter-by-letter
-    const TAGLINE = "PREMIUM BEATS COLLECTION";
+    const TAGLINE = t.tagline;
     const visibleLetters = Math.round(interpolate(taglineSpring, [0, 1], [0, TAGLINE.length]));
 
     // Orbiting sparks/particles
@@ -103,8 +143,8 @@ const CoverShowcase: React.FC = () => {
         };
     });
 
-    // Exit (adjusted for 4s duration)
-    const exitBlur = interpolate(frame, [90, 115], [0, 40], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    // Exit (adjusted for 5s duration)
+    const exitBlur = interpolate(frame, [130, 145], [0, 40], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
     // Equalizer bars
     const eqBars = Array.from({ length: 20 }, (_, i) => ({
@@ -207,7 +247,7 @@ const CoverShowcase: React.FC = () => {
                         fontFamily: FONTS.body,
                         textShadow: `0 0 20px ${COLORS.primary}`
                     }}>
-                        {HIGHLIGHT_TEXT}
+                        {t.highlightText}
                     </div>
                     <div style={{
                         fontSize: 100,
@@ -220,7 +260,7 @@ const CoverShowcase: React.FC = () => {
                         textShadow: `0 0 60px ${COLORS.primary}, 0 0 120px rgba(127,255,0,0.3), 0 4px 20px rgba(0,0,0,0.8)`,
                         position: "relative"
                     }}>
-                        {PRODUCT_NAME}
+                        {t.productName}
                         {/* Glitch duplicate layers */}
                         {glitchActive && (
                             <>
@@ -228,12 +268,12 @@ const CoverShowcase: React.FC = () => {
                                     position: "absolute", top: 2, left: -3, right: 0,
                                     color: "rgba(0,255,0,0.4)",
                                     clipPath: "polygon(0 0, 100% 0, 100% 45%, 0 45%)"
-                                }}>{PRODUCT_NAME}</div>
+                                }}>{t.productName}</div>
                                 <div style={{
                                     position: "absolute", top: -2, left: 3, right: 0,
                                     color: "rgba(0,200,255,0.3)",
                                     clipPath: "polygon(0 55%, 100% 55%, 100% 100%, 0 100%)"
-                                }}>{PRODUCT_NAME}</div>
+                                }}>{t.productName}</div>
                             </>
                         )}
                     </div>
@@ -245,7 +285,7 @@ const CoverShowcase: React.FC = () => {
                         textTransform: "uppercase",
                         fontFamily: FONTS.headline
                     }}>
-                        {PRODUCT_SUBTITLE}
+                        {t.productSubtitle}
                     </div>
                 </div>
 
@@ -330,7 +370,7 @@ const CoverShowcase: React.FC = () => {
                             transform: `scale(${interpolate(badgeSpring, [0, 1], [0, 1])})`,
                             zIndex: 30
                         }}>
-                            🔥 LIMITED EDITION
+                            {t.limitedEdition}
                         </div>
 
                         {/* Cover Image */}
@@ -419,7 +459,7 @@ const CoverShowcase: React.FC = () => {
                         fontFamily: FONTS.accent,
                         textShadow: `0 0 40px ${COLORS.primary}, 0 0 80px rgba(127,255,0,0.5)`
                     }}>
-                        {CTA_TEXT}
+                        {t.ctaText}
                     </div>
                 </div>
             </AbsoluteFill>
@@ -806,452 +846,46 @@ const HybridShowcase: React.FC = () => {
     );
 };
 
-// Float animation
-const floatY = Math.sin(frame / 22) * 4;
-
-// Breathing pulse for card (1.0 -> 1.015 -> 1.0)
-const breathe = 1 + Math.sin(frame / 25) * 0.015;
-
-// Shine sweep position (moves top to bottom over time)
-const shineSweep = interpolate(frame, [15, 60], [-100, 120], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-
-// 3D Tilt effect (matching clip 1)
-const tiltX = Math.sin(frame / 25) * 4;
-const tiltY = Math.cos(frame / 30) * 3;
-
-// Border light rotation
-const borderLightAngle = (frame * 4) % 360;
-
-// Badge spring
-const badgeSpring = spring({ frame: frame - 20, fps, config: { stiffness: 150, damping: 12 } });
-
-// Orbiting sparks
-const sparks = Array.from({ length: 8 }, (_, i) => {
-    const angle = ((frame * 2 + i * 45) % 360) * (Math.PI / 180);
-    const radius = 290 + Math.sin(frame / 10 + i) * 15;
-    return {
-        x: Math.cos(angle) * radius,
-        y: Math.sin(angle) * radius,
-        size: 4 + (i % 3) * 2,
-        opacity: 0.5 + Math.sin(frame / 8 + i) * 0.4
-    };
-});
-
-const exitBlur = interpolate(frame, [180, 205], [0, 40], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-
-// Equalizer bars
-const eqBars = Array.from({ length: 20 }, (_, i) => ({
-    height: 30 + Math.sin(frame / (4 + i * 0.5) + i * 0.8) * 25 + Math.cos(frame / (6 + i * 0.3)) * 15,
-    opacity: 0.3 + Math.sin(frame / (5 + i)) * 0.2
-}));
-
-// Particles data (fixed positions, animated with frame)
-const particles = Array.from({ length: 12 }, (_, i) => ({
-    x: 15 + (i * 67) % 85,
-    y: (10 + (i * 43) % 80 + Math.sin(frame / (15 + i * 3)) * 8),
-    size: 3 + (i % 4) * 2,
-    opacity: 0.15 + Math.sin(frame / (10 + i * 2)) * 0.15
-}));
-
-return (
-    <AbsoluteFill style={{
-        background: "linear-gradient(180deg, #000000 0%, #0a1a0a 50%, #000000 100%)",
-        filter: `blur(${interpolate(entranceSpring, [0, 1], [20, 0]) + exitBlur}px)`
-    }}>
-        {/* Animated Light Rays */}
-        <AbsoluteFill style={{
-            background: `conic-gradient(from ${frame * 0.6}deg at 50% 35%, transparent 0deg, rgba(127,255,0,0.05) 25deg, transparent 50deg, rgba(127,255,0,0.03) 100deg, transparent 150deg)`,
-            opacity: glassSpring
-        }} />
-
-        {/* Green Glow Overlay */}
-        <AbsoluteFill style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 55%, rgba(127,255,0,0.12) 0%, transparent 60%)",
-            opacity: glowPulse
-        }} />
-
-        {/* Floating Particles */}
-        {particles.map((p, i) => (
-            <div key={i} style={{
-                position: "absolute",
-                left: `${p.x}%`,
-                top: `${p.y}%`,
-                width: p.size,
-                height: p.size,
-                borderRadius: "50%",
-                background: COLORS.primary,
-                opacity: p.opacity * glassSpring,
-                boxShadow: `0 0 ${p.size * 3}px ${COLORS.primary}`,
-                filter: "blur(1px)"
-            }} />
-        ))}
-
-        {/* Floating Glass Panels */}
-        <div style={{
-            position: "absolute",
-            top: "8%",
-            left: "-12%",
-            width: 180,
-            height: 280,
-            background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
-            borderRadius: 30,
-            border: "1px solid rgba(255,255,255,0.08)",
-            transform: `rotate(-18deg) translateY(${floatY * 1.5}px)`,
-            opacity: glassSpring * 0.35
-        }} />
-        <div style={{
-            position: "absolute",
-            bottom: "10%",
-            right: "-10%",
-            width: 150,
-            height: 220,
-            background: "linear-gradient(135deg, rgba(127,255,0,0.04) 0%, rgba(255,255,255,0.02) 100%)",
-            borderRadius: 25,
-            border: "1px solid rgba(127,255,0,0.1)",
-            transform: `rotate(22deg) translateY(${-floatY}px)`,
-            opacity: glassSpring * 0.3
-        }} />
-
-        {/* Header */}
-        <div style={{
-            position: "absolute",
-            top: 50,
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            transform: `translateY(${interpolate(entranceSpring, [0, 1], [-30, 0])}px)`,
-            opacity: entranceSpring
-        }}>
-            <div style={{
-                fontSize: 72,
-                fontWeight: 400,
-                color: COLORS.text,
-                fontFamily: FONTS.headline,
-                textShadow: `0 0 50px ${COLORS.primary}, 0 0 100px rgba(127,255,0,0.3)`
-            }}>
-                AND
-            </div>
-            <div style={{
-                fontSize: 64,
-                fontWeight: 400,
-                color: COLORS.primary,
-                fontFamily: FONTS.accent,
-                textShadow: `0 0 40px ${COLORS.primary}`
-            }}>
-                MUCH MORE!
-            </div>
-        </div>
-
-        {/* Main Content: Cover on TOP, List Below */}
-        <AbsoluteFill className="flex items-center justify-center">
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 30,
-                transform: `translateY(${floatY}px)`,
-                marginTop: 60
-            }}>
-                {/* Cover Preview on TOP - Full Effects like Clip 1 */}
-                <div style={{
-                    position: "relative",
-                    opacity: glassSpring,
-                    transform: `scale(${interpolate(glassSpring, [0, 1], [0.7, 1])}) perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
-                }}>
-                    {/* Orbiting Sparks */}
-                    {sparks.map((spark, i) => (
-                        <div key={i} style={{
-                            position: "absolute",
-                            left: "50%",
-                            top: "50%",
-                            width: spark.size,
-                            height: spark.size,
-                            borderRadius: "50%",
-                            background: COLORS.primary,
-                            opacity: spark.opacity * glassSpring,
-                            transform: `translate(${spark.x}px, ${spark.y}px) translate(-50%, -50%)`,
-                            boxShadow: `0 0 ${spark.size * 4}px ${COLORS.primary}, 0 0 ${spark.size * 8}px rgba(127,255,0,0.3)`,
-                            zIndex: 10
-                        }} />
-                    ))}
-
-                    {/* Outer Glow */}
-                    <div style={{
-                        position: "absolute",
-                        inset: -25,
-                        background: `radial-gradient(circle, rgba(127,255,0,${0.4 * glowPulse}) 0%, transparent 70%)`,
-                        borderRadius: 35,
-                        filter: "blur(30px)"
-                    }} />
-
-                    {/* Glass Frame with Rotating Border Light */}
-                    <div style={{
-                        position: "relative",
-                        padding: 10,
-                        background: "linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, rgba(127,255,0,0.08) 100%)",
-                        borderRadius: 24,
-                        border: `2px solid rgba(127,255,0,${0.3 + glowPulse * 0.3})`,
-                        boxShadow: `
-                                0 30px 60px rgba(0,0,0,0.5),
-                                0 0 40px rgba(127,255,0,${0.2 * glowPulse}),
-                                inset 0 1px 0 rgba(255,255,255,0.2),
-                                inset 0 -1px 0 rgba(0,0,0,0.3)
-                            `,
-                        backdropFilter: "blur(20px)",
-                        overflow: "hidden"
-                    }}>
-                        {/* Rotating Border Light Point */}
-                        <div style={{
-                            position: "absolute",
-                            width: 40,
-                            height: 40,
-                            borderRadius: "50%",
-                            background: `radial-gradient(circle, ${COLORS.primary} 0%, transparent 70%)`,
-                            filter: "blur(8px)",
-                            top: `${50 + Math.sin(borderLightAngle * Math.PI / 180) * 52}%`,
-                            left: `${50 + Math.cos(borderLightAngle * Math.PI / 180) * 52}%`,
-                            transform: "translate(-50%, -50%)",
-                            opacity: 0.8,
-                            zIndex: 20,
-                            pointerEvents: "none"
-                        }} />
-
-                        {/* LIMITED EDITION Badge */}
-                        <div style={{
-                            position: "absolute",
-                            top: 20,
-                            right: -8,
-                            background: `linear-gradient(135deg, ${COLORS.primary} 0%, #4ADE80 100%)`,
-                            color: "#000",
-                            fontSize: 13,
-                            fontWeight: 900,
-                            padding: "6px 18px",
-                            borderRadius: 20,
-                            fontFamily: FONTS.body,
-                            letterSpacing: 2,
-                            boxShadow: `0 4px 15px rgba(127,255,0,0.5)`,
-                            transform: `scale(${interpolate(badgeSpring, [0, 1], [0, 1])})`,
-                            zIndex: 30
-                        }}>
-                            🔥 LIMITED EDITION
-                        </div>
-
-                        {/* Cover Image */}
-                        <div style={{
-                            borderRadius: 16,
-                            overflow: "hidden",
-                            boxShadow: "0 10px 40px rgba(0,0,0,0.4)"
-                        }}>
-                            <Img src={staticFile("cover.png")} style={{ width: 500, height: 500, objectFit: "cover" }} />
-                        </div>
-
-                        {/* Glass Shine Effect */}
-                        <div style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: "50%",
-                            background: "linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%)",
-                            borderRadius: "24px 24px 0 0",
-                            pointerEvents: "none"
-                        }} />
-                    </div>
-
-                    {/* Mirror Reflection */}
-                    <div style={{
-                        marginTop: 8,
-                        borderRadius: 16,
-                        overflow: "hidden",
-                        transform: "scaleY(-1)",
-                        height: 80,
-                        opacity: 0.15,
-                        maskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)",
-                        WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)"
-                    }}>
-                        <Img src={staticFile("cover.png")} style={{ width: 500, height: 500, objectFit: "cover", borderRadius: 16 }} />
-                    </div>
-                </div>
-
-                {/* Glass Card with Folder List */}
-                <div style={{ position: "relative", width: "100%" }}>
-                    {/* Outer Glow */}
-                    <div style={{
-                        position: "absolute",
-                        inset: -25,
-                        background: `radial-gradient(circle, rgba(127,255,0,${0.3 * glowPulse}) 0%, transparent 70%)`,
-                        borderRadius: 35,
-                        filter: "blur(20px)"
-                    }} />
-
-                    {/* Glass Container with Breathing Pulse */}
-                    <div style={{
-                        position: "relative",
-                        background: "linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 50%, rgba(127,255,0,0.05) 100%)",
-                        borderRadius: 28,
-                        border: `2px solid rgba(127,255,0,${0.2 + glowPulse * 0.2})`,
-                        boxShadow: `
-                                0 25px 50px rgba(0,0,0,0.4),
-                                0 0 30px rgba(127,255,0,${0.12 * glowPulse}),
-                                inset 0 1px 0 rgba(255,255,255,0.15),
-                                inset 0 -1px 0 rgba(0,0,0,0.2)
-                            `,
-                        backdropFilter: "blur(20px)",
-                        padding: "30px 40px",
-                        width: 650,
-                        transform: `scale(${breathe})`,
-                        overflow: "hidden"
-                    }}>
-                        {FOLDER_LIST.map((folder, i) => {
-                            const itemDelay = i * 5;
-                            const itemSpring = spring({ frame: frame - itemDelay - 12, fps, config: { stiffness: 100, damping: 14 } });
-                            return (
-                                <div key={i} style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 24,
-                                    padding: "22px 30px",
-                                    marginBottom: i < FOLDER_LIST.length - 1 ? 12 : 0,
-                                    background: "linear-gradient(135deg, rgba(127,255,0,0.15) 0%, rgba(127,255,0,0.05) 100%)",
-                                    borderRadius: 20,
-                                    border: `2px solid rgba(127,255,0,${0.5 + glowPulse * 0.3})`,
-                                    opacity: itemSpring,
-                                    transform: `translateX(${interpolate(itemSpring, [0, 1], [-50, 0])}px) scale(${interpolate(itemSpring, [0, 1], [0.9, 1])})`,
-                                    boxShadow: `0 0 25px rgba(127,255,0,${0.15 * glowPulse})`,
-                                    position: "relative"
-                                }}>
-                                    <div style={{
-                                        fontSize: 50,
-                                        filter: `drop-shadow(0 0 12px ${COLORS.primary})`,
-                                        minWidth: 60,
-                                        textAlign: "center"
-                                    }}>{folder.icon}</div>
-                                    <div style={{
-                                        fontSize: 36,
-                                        fontWeight: 700,
-                                        color: COLORS.primary,
-                                        fontFamily: FONTS.body,
-                                        textShadow: `0 0 15px ${COLORS.primary}`,
-                                        letterSpacing: 2
-                                    }}>
-                                        {folder.name}
-                                    </div>
-                                </div>
-                            );
-                        })}
-
-                        {/* Shine Sweep Effect */}
-                        <div style={{
-                            position: "absolute",
-                            top: `${shineSweep}%`,
-                            left: 0,
-                            right: 0,
-                            height: 60,
-                            background: "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%)",
-                            pointerEvents: "none",
-                            transform: "skewY(-2deg)"
-                        }} />
-
-                        {/* Glass Shine */}
-                        <div style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: "40%",
-                            background: "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%)",
-                            borderRadius: "28px 28px 0 0",
-                            pointerEvents: "none"
-                        }} />
-                    </div>
-                </div>
-            </div>
-        </AbsoluteFill>
-
-        {/* Bottom Text - ALL INCLUDED */}
-        <div style={{
-            position: "absolute",
-            bottom: 80,
-            left: 0,
-            right: 0,
-            display: "flex",
-            justifyContent: "center"
-        }}>
-            <div style={{ position: "relative" }}>
-                <div style={{
-                    position: "absolute",
-                    inset: "-14px -40px",
-                    background: "linear-gradient(135deg, rgba(127,255,0,0.15) 0%, rgba(127,255,0,0.04) 100%)",
-                    borderRadius: 40,
-                    border: `1px solid rgba(127,255,0,${0.2 + glowPulse * 0.2})`,
-                    backdropFilter: "blur(10px)",
-                    boxShadow: `0 0 25px rgba(127,255,0,${0.1 * glowPulse})`
-                }} />
-                <div style={{
-                    position: "relative",
-                    fontSize: 30,
-                    fontWeight: 400,
-                    color: COLORS.primary,
-                    fontFamily: FONTS.accent,
-                    letterSpacing: 6,
-                    textShadow: `0 0 25px ${COLORS.primary}`
-                }}>
-                    ALL INCLUDED
-                </div>
-            </div>
-        </div>
-
-        {/* Equalizer Bars at Bottom */}
-        <div style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 80,
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "center",
-            gap: 4,
-            padding: "0 40px",
-            zIndex: 4,
-            opacity: entranceSpring * 0.5
-        }}>
-            {eqBars.map((bar, i) => (
-                <div key={`eq-${i}`} style={{
-                    width: `${100 / 20}%`,
-                    height: bar.height,
-                    background: `linear-gradient(180deg, ${COLORS.primary} 0%, rgba(127,255,0,0.2) 100%)`,
-                    borderRadius: "4px 4px 0 0",
-                    opacity: bar.opacity,
-                    boxShadow: "0 0 8px rgba(127,255,0,0.2)"
-                }} />
-            ))}
-        </div>
-    </AbsoluteFill>
-);
-};
-
-// =====================
-// SEGMENT 5: CTA (Glassmorphism)
-// =====================
-const CTASection: React.FC = () => {
+const FolderList: React.FC<{ t: Translations }> = ({ t }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
     const entranceSpring = spring({ frame, fps, config: { stiffness: 100, damping: 15 } });
-    const glassSpring = spring({ frame: frame - 3, fps, config: { stiffness: 60, damping: 12 } });
-    const line1Spring = spring({ frame: frame - 5, fps, config: { stiffness: 100, damping: 12 } });
-    const line2Spring = spring({ frame: frame - 15, fps, config: { stiffness: 100, damping: 12 } });
-    const line3Spring = spring({ frame: frame - 25, fps, config: { stiffness: 100, damping: 12 } });
-
-    // Glow pulse
-    const glowPulse = 0.7 + Math.sin(frame / 10) * 0.3;
+    const glassSpring = spring({ frame: frame - 5, fps, config: { stiffness: 60, damping: 12 } });
+    const glowPulse = 0.7 + Math.sin(frame / 15) * 0.3;
 
     // Float animation
-    const floatY = Math.sin(frame / 18) * 5;
+    const floatY = Math.sin(frame / 22) * 4;
 
-    // Exit fade
-    const exitOpacity = interpolate(frame, [75, 90], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    // Breathing pulse for card (1.0 -> 1.015 -> 1.0)
+    const breathe = 1 + Math.sin(frame / 25) * 0.015;
+
+    // Shine sweep position (moves top to bottom over time)
+    const shineSweep = interpolate(frame, [15, 60], [-100, 120], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+
+    // 3D Tilt effect (matching clip 1)
+    const tiltX = Math.sin(frame / 25) * 4;
+    const tiltY = Math.cos(frame / 30) * 3;
+
+    // Border light rotation
+    const borderLightAngle = (frame * 4) % 360;
+
+    // Badge spring
+    const badgeSpring = spring({ frame: frame - 20, fps, config: { stiffness: 150, damping: 12 } });
+
+    // Orbiting sparks
+    const sparks = Array.from({ length: 8 }, (_, i) => {
+        const angle = ((frame * 2 + i * 45) % 360) * (Math.PI / 180);
+        const radius = 290 + Math.sin(frame / 10 + i) * 15;
+        return {
+            x: Math.cos(angle) * radius,
+            y: Math.sin(angle) * radius,
+            size: 4 + (i % 3) * 2,
+            opacity: 0.5 + Math.sin(frame / 8 + i) * 0.4
+        };
+    });
+
+    const exitBlur = interpolate(frame, [160, 175], [0, 40], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
     // Equalizer bars
     const eqBars = Array.from({ length: 20 }, (_, i) => ({
@@ -1259,150 +893,361 @@ const CTASection: React.FC = () => {
         opacity: 0.3 + Math.sin(frame / (5 + i)) * 0.2
     }));
 
+    // Particles data (fixed positions, animated with frame)
+    const particles = Array.from({ length: 12 }, (_, i) => ({
+        x: 15 + (i * 67) % 85,
+        y: (10 + (i * 43) % 80 + Math.sin(frame / (15 + i * 3)) * 8),
+        size: 3 + (i % 4) * 2,
+        opacity: 0.15 + Math.sin(frame / (10 + i * 2)) * 0.15
+    }));
+
     return (
         <AbsoluteFill style={{
             background: "linear-gradient(180deg, #000000 0%, #0a1a0a 50%, #000000 100%)",
-            filter: `blur(${interpolate(entranceSpring, [0, 1], [20, 0])}px)`,
-            opacity: exitOpacity
+            filter: `blur(${interpolate(entranceSpring, [0, 1], [20, 0]) + exitBlur}px)`
         }}>
             {/* Animated Light Rays */}
             <AbsoluteFill style={{
-                background: `conic-gradient(from ${frame * 1}deg at 50% 45%, transparent 0deg, rgba(127,255,0,0.08) 15deg, transparent 30deg, rgba(127,255,0,0.05) 60deg, transparent 90deg)`,
+                background: `conic-gradient(from ${frame * 0.6}deg at 50% 35%, transparent 0deg, rgba(127,255,0,0.05) 25deg, transparent 50deg, rgba(127,255,0,0.03) 100deg, transparent 150deg)`,
                 opacity: glassSpring
             }} />
 
             {/* Green Glow Overlay */}
             <AbsoluteFill style={{
-                background: "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(127,255,0,0.2) 0%, transparent 60%)",
+                background: "radial-gradient(ellipse 80% 60% at 50% 55%, rgba(127,255,0,0.12) 0%, transparent 60%)",
                 opacity: glowPulse
             }} />
+
+            {/* Floating Particles */}
+            {particles.map((p, i) => (
+                <div key={i} style={{
+                    position: "absolute",
+                    left: `${p.x}%`,
+                    top: `${p.y}%`,
+                    width: p.size,
+                    height: p.size,
+                    borderRadius: "50%",
+                    background: COLORS.primary,
+                    opacity: p.opacity * glassSpring,
+                    boxShadow: `0 0 ${p.size * 3}px ${COLORS.primary}`,
+                    filter: "blur(1px)"
+                }} />
+            ))}
 
             {/* Floating Glass Panels */}
             <div style={{
                 position: "absolute",
-                top: "12%",
-                right: "-8%",
+                top: "8%",
+                left: "-12%",
                 width: 180,
-                height: 260,
-                background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
-                borderRadius: 28,
+                height: 280,
+                background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
+                borderRadius: 30,
                 border: "1px solid rgba(255,255,255,0.08)",
-                transform: `rotate(20deg) translateY(${floatY * 1.4}px)`,
-                opacity: glassSpring * 0.4
+                transform: `rotate(-18deg) translateY(${floatY * 1.5}px)`,
+                opacity: glassSpring * 0.35
             }} />
             <div style={{
                 position: "absolute",
-                bottom: "18%",
-                left: "-10%",
-                width: 160,
-                height: 230,
-                background: "linear-gradient(135deg, rgba(127,255,0,0.05) 0%, rgba(255,255,255,0.02) 100%)",
+                bottom: "10%",
+                right: "-10%",
+                width: 150,
+                height: 220,
+                background: "linear-gradient(135deg, rgba(127,255,0,0.04) 0%, rgba(255,255,255,0.02) 100%)",
                 borderRadius: 25,
-                border: "1px solid rgba(127,255,0,0.12)",
-                transform: `rotate(-22deg) translateY(${-floatY}px)`,
-                opacity: glassSpring * 0.35
+                border: "1px solid rgba(127,255,0,0.1)",
+                transform: `rotate(22deg) translateY(${-floatY}px)`,
+                opacity: glassSpring * 0.3
             }} />
 
-            {/* CTA Content with Glass Card */}
-            <AbsoluteFill className="flex flex-col items-center justify-center">
+            {/* Header */}
+            <div style={{
+                position: "absolute",
+                top: 50,
+                left: 0,
+                right: 0,
+                textAlign: "center",
+                transform: `translateY(${interpolate(entranceSpring, [0, 1], [-30, 0])}px)`,
+                opacity: entranceSpring
+            }}>
                 <div style={{
-                    position: "relative",
-                    transform: `translateY(${floatY}px)`,
+                    fontSize: 72,
+                    fontWeight: 400,
+                    color: COLORS.text,
+                    fontFamily: FONTS.headline,
+                    textShadow: `0 0 50px ${COLORS.primary}, 0 0 100px rgba(127,255,0,0.3)`
                 }}>
-                    {/* Outer Glow */}
-                    <div style={{
-                        position: "absolute",
-                        inset: -40,
-                        background: `radial-gradient(circle, rgba(127,255,0,${0.4 * glowPulse}) 0%, transparent 70%)`,
-                        borderRadius: 50,
-                        filter: "blur(30px)"
-                    }} />
+                    {t.headerLine1}
+                </div>
+                <div style={{
+                    fontSize: 64,
+                    fontWeight: 400,
+                    color: COLORS.primary,
+                    fontFamily: FONTS.accent,
+                    textShadow: `0 0 40px ${COLORS.primary}`
+                }}>
+                    {t.headerLine2}
+                </div>
+            </div>
 
-                    {/* Glass Card */}
+            {/* Main Content: Cover on TOP, List Below */}
+            <AbsoluteFill className="flex items-center justify-center">
+                <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 30,
+                    transform: `translateY(${floatY}px)`,
+                    marginTop: 60
+                }}>
+                    {/* Cover Preview on TOP - Full Effects like Clip 1 */}
                     <div style={{
                         position: "relative",
-                        padding: "60px 80px",
-                        background: "linear-gradient(145deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 50%, rgba(127,255,0,0.08) 100%)",
-                        borderRadius: 35,
-                        border: `2px solid rgba(127,255,0,${0.3 + glowPulse * 0.3})`,
-                        boxShadow: `
-                            0 30px 60px rgba(0,0,0,0.5),
-                            0 0 50px rgba(127,255,0,${0.2 * glowPulse}),
-                            inset 0 1px 0 rgba(255,255,255,0.2),
-                            inset 0 -1px 0 rgba(0,0,0,0.3)
-                        `,
-                        backdropFilter: "blur(25px)",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: 15
+                        opacity: glassSpring,
+                        transform: `scale(${interpolate(glassSpring, [0, 1], [0.7, 1])}) perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
                     }}>
-                        {/* COMMENT */}
-                        <div style={{
-                            fontSize: 56,
-                            fontWeight: 400,
-                            color: COLORS.text,
-                            fontFamily: FONTS.headline,
-                            transform: `translateY(${interpolate(line1Spring, [0, 1], [-30, 0])}px)`,
-                            opacity: line1Spring,
-                            textShadow: `0 0 40px ${COLORS.primary}`
-                        }}>
-                            COMMENT
-                        </div>
-
-                        {/* "SEND" with Glass Pill */}
-                        <div style={{
-                            position: "relative",
-                            transform: `scale(${interpolate(line2Spring, [0, 1], [0.5, 1])})`,
-                            opacity: line2Spring
-                        }}>
-                            <div style={{
+                        {/* Orbiting Sparks */}
+                        {sparks.map((spark, i) => (
+                            <div key={i} style={{
                                 position: "absolute",
-                                inset: "-10px -30px",
-                                background: "linear-gradient(135deg, rgba(127,255,0,0.2) 0%, rgba(127,255,0,0.08) 100%)",
-                                borderRadius: 30,
-                                border: `1px solid rgba(127,255,0,${0.4 + glowPulse * 0.3})`,
-                                backdropFilter: "blur(10px)"
+                                left: "50%",
+                                top: "50%",
+                                width: spark.size,
+                                height: spark.size,
+                                borderRadius: "50%",
+                                background: COLORS.primary,
+                                opacity: spark.opacity * glassSpring,
+                                transform: `translate(${spark.x}px, ${spark.y}px) translate(-50%, -50%)`,
+                                boxShadow: `0 0 ${spark.size * 4}px ${COLORS.primary}, 0 0 ${spark.size * 8}px rgba(127,255,0,0.3)`,
+                                zIndex: 10
                             }} />
-                            <div style={{
-                                position: "relative",
-                                fontSize: 90,
-                                fontWeight: 400,
-                                color: COLORS.primary,
-                                fontFamily: FONTS.accent,
-                                textShadow: `0 0 60px ${COLORS.primary}, 0 0 120px rgba(127,255,0,0.5)`
-                            }}>
-                                "SEND"
-                            </div>
-                        </div>
+                        ))}
 
-                        {/* FOR THE LINK */}
-                        <div style={{
-                            fontSize: 42,
-                            fontWeight: 400,
-                            color: COLORS.text,
-                            fontFamily: FONTS.body,
-                            transform: `translateY(${interpolate(line3Spring, [0, 1], [30, 0])}px)`,
-                            opacity: line3Spring,
-                            textShadow: `0 0 30px ${COLORS.primary}`
-                        }}>
-                            FOR THE LINK!!
-                        </div>
-
-                        {/* Glass Shine */}
+                        {/* Outer Glow */}
                         <div style={{
                             position: "absolute",
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: "45%",
-                            background: "linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%)",
-                            borderRadius: "35px 35px 0 0",
-                            pointerEvents: "none"
+                            inset: -25,
+                            background: `radial-gradient(circle, rgba(127,255,0,${0.4 * glowPulse}) 0%, transparent 70%)`,
+                            borderRadius: 35,
+                            filter: "blur(30px)"
                         }} />
+
+                        {/* Glass Frame with Rotating Border Light */}
+                        <div style={{
+                            position: "relative",
+                            padding: 10,
+                            background: "linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, rgba(127,255,0,0.08) 100%)",
+                            borderRadius: 24,
+                            border: `2px solid rgba(127,255,0,${0.3 + glowPulse * 0.3})`,
+                            boxShadow: `
+                                0 30px 60px rgba(0,0,0,0.5),
+                                0 0 40px rgba(127,255,0,${0.2 * glowPulse}),
+                                inset 0 1px 0 rgba(255,255,255,0.2),
+                                inset 0 -1px 0 rgba(0,0,0,0.3)
+                            `,
+                            backdropFilter: "blur(20px)",
+                            overflow: "hidden"
+                        }}>
+                            {/* Rotating Border Light Point */}
+                            <div style={{
+                                position: "absolute",
+                                width: 40,
+                                height: 40,
+                                borderRadius: "50%",
+                                background: `radial-gradient(circle, ${COLORS.primary} 0%, transparent 70%)`,
+                                filter: "blur(8px)",
+                                top: `${50 + Math.sin(borderLightAngle * Math.PI / 180) * 52}%`,
+                                left: `${50 + Math.cos(borderLightAngle * Math.PI / 180) * 52}%`,
+                                transform: "translate(-50%, -50%)",
+                                opacity: 0.8,
+                                zIndex: 20,
+                                pointerEvents: "none"
+                            }} />
+
+                            {/* LIMITED EDITION Badge */}
+                            <div style={{
+                                position: "absolute",
+                                top: 20,
+                                right: -8,
+                                background: `linear-gradient(135deg, ${COLORS.primary} 0%, #4ADE80 100%)`,
+                                color: "#000",
+                                fontSize: 13,
+                                fontWeight: 900,
+                                padding: "6px 18px",
+                                borderRadius: 20,
+                                fontFamily: FONTS.body,
+                                letterSpacing: 2,
+                                boxShadow: `0 4px 15px rgba(127,255,0,0.5)`,
+                                transform: `scale(${interpolate(badgeSpring, [0, 1], [0, 1])})`,
+                                zIndex: 30
+                            }}>
+                                {t.limitedEdition}
+                            </div>
+
+                            {/* Cover Image */}
+                            <div style={{
+                                borderRadius: 16,
+                                overflow: "hidden",
+                                boxShadow: "0 10px 40px rgba(0,0,0,0.4)"
+                            }}>
+                                <Img src={staticFile("cover.png")} style={{ width: 500, height: 500, objectFit: "cover" }} />
+                            </div>
+
+                            {/* Glass Shine Effect */}
+                            <div style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                height: "50%",
+                                background: "linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%)",
+                                borderRadius: "24px 24px 0 0",
+                                pointerEvents: "none"
+                            }} />
+                        </div>
+
+                        {/* Mirror Reflection */}
+                        <div style={{
+                            marginTop: 8,
+                            borderRadius: 16,
+                            overflow: "hidden",
+                            transform: "scaleY(-1)",
+                            height: 80,
+                            opacity: 0.15,
+                            maskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)",
+                            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)"
+                        }}>
+                            <Img src={staticFile("cover.png")} style={{ width: 500, height: 500, objectFit: "cover", borderRadius: 16 }} />
+                        </div>
+                    </div>
+
+                    {/* Glass Card with Folder List */}
+                    <div style={{ position: "relative", width: "100%" }}>
+                        {/* Outer Glow */}
+                        <div style={{
+                            position: "absolute",
+                            inset: -25,
+                            background: `radial-gradient(circle, rgba(127,255,0,${0.3 * glowPulse}) 0%, transparent 70%)`,
+                            borderRadius: 35,
+                            filter: "blur(20px)"
+                        }} />
+
+                        {/* Glass Container with Breathing Pulse */}
+                        <div style={{
+                            position: "relative",
+                            background: "linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 50%, rgba(127,255,0,0.05) 100%)",
+                            borderRadius: 28,
+                            border: `2px solid rgba(127,255,0,${0.2 + glowPulse * 0.2})`,
+                            boxShadow: `
+                                0 25px 50px rgba(0,0,0,0.4),
+                                0 0 30px rgba(127,255,0,${0.12 * glowPulse}),
+                                inset 0 1px 0 rgba(255,255,255,0.15),
+                                inset 0 -1px 0 rgba(0,0,0,0.2)
+                            `,
+                            backdropFilter: "blur(20px)",
+                            padding: "30px 40px",
+                            width: 650,
+                            transform: `scale(${breathe})`,
+                            overflow: "hidden"
+                        }}>
+                            {t.folderList.map((folder: { name: string; icon: string }, i: number) => {
+                                const itemDelay = i * 5;
+                                const itemSpring = spring({ frame: frame - itemDelay - 12, fps, config: { stiffness: 100, damping: 14 } });
+                                return (
+                                    <div key={i} style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 24,
+                                        padding: "22px 30px",
+                                        marginBottom: i < t.folderList.length - 1 ? 12 : 0,
+                                        background: "linear-gradient(135deg, rgba(127,255,0,0.15) 0%, rgba(127,255,0,0.05) 100%)",
+                                        borderRadius: 20,
+                                        border: `2px solid rgba(127,255,0,${0.5 + glowPulse * 0.3})`,
+                                        opacity: itemSpring,
+                                        transform: `translateX(${interpolate(itemSpring, [0, 1], [-50, 0])}px) scale(${interpolate(itemSpring, [0, 1], [0.9, 1])})`,
+                                        boxShadow: `0 0 25px rgba(127,255,0,${0.15 * glowPulse})`,
+                                        position: "relative"
+                                    }}>
+                                        <div style={{
+                                            fontSize: 50,
+                                            filter: `drop-shadow(0 0 12px ${COLORS.primary})`,
+                                            minWidth: 60,
+                                            textAlign: "center"
+                                        }}>{folder.icon}</div>
+                                        <div style={{
+                                            fontSize: 36,
+                                            fontWeight: 700,
+                                            color: COLORS.primary,
+                                            fontFamily: FONTS.body,
+                                            textShadow: `0 0 15px ${COLORS.primary}`,
+                                            letterSpacing: 2
+                                        }}>
+                                            {folder.name}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+
+                            {/* Shine Sweep Effect */}
+                            <div style={{
+                                position: "absolute",
+                                top: `${shineSweep}%`,
+                                left: 0,
+                                right: 0,
+                                height: 60,
+                                background: "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%)",
+                                pointerEvents: "none",
+                                transform: "skewY(-2deg)"
+                            }} />
+
+                            {/* Glass Shine */}
+                            <div style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                height: "40%",
+                                background: "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%)",
+                                borderRadius: "28px 28px 0 0",
+                                pointerEvents: "none"
+                            }} />
+                        </div>
                     </div>
                 </div>
             </AbsoluteFill>
+
+            {/* Bottom Text - ALL INCLUDED */}
+            <div style={{
+                position: "absolute",
+                bottom: 80,
+                left: 0,
+                right: 0,
+                display: "flex",
+                justifyContent: "center"
+            }}>
+                <div style={{ position: "relative" }}>
+                    <div style={{
+                        position: "absolute",
+                        inset: "-14px -40px",
+                        background: "linear-gradient(135deg, rgba(127,255,0,0.15) 0%, rgba(127,255,0,0.04) 100%)",
+                        borderRadius: 40,
+                        border: `1px solid rgba(127,255,0,${0.2 + glowPulse * 0.2})`,
+                        backdropFilter: "blur(10px)",
+                        boxShadow: `0 0 25px rgba(127,255,0,${0.1 * glowPulse})`
+                    }} />
+                    <div style={{
+                        position: "relative",
+                        fontSize: 30,
+                        fontWeight: 400,
+                        color: COLORS.primary,
+                        fontFamily: FONTS.accent,
+                        letterSpacing: 6,
+                        textShadow: `0 0 25px ${COLORS.primary}`
+                    }}>
+                        {t.allIncluded}
+                    </div>
+                </div>
+            </div>
 
             {/* Equalizer Bars at Bottom */}
             <div style={{
@@ -1435,9 +1280,142 @@ const CTASection: React.FC = () => {
 };
 
 // =====================
+// SEGMENT 4: CTA (Cinematic Full-Screen)
+// =====================
+const CTASection: React.FC<{ t: Translations }> = ({ t }) => {
+    const frame = useCurrentFrame();
+    const { fps } = useVideoConfig();
+
+    const entranceSpring = spring({ frame, fps, config: { stiffness: 80, damping: 14 } });
+    const coverSpring = spring({ frame: frame - 3, fps, config: { stiffness: 60, damping: 12 } });
+    const textSpring = spring({ frame: frame - 15, fps, config: { stiffness: 100, damping: 14 } });
+    const sendSpring = spring({ frame: frame - 25, fps, config: { stiffness: 120, damping: 12 } });
+    const subSpring = spring({ frame: frame - 35, fps, config: { stiffness: 100, damping: 14 } });
+    const arrowSpring = spring({ frame: frame - 40, fps, config: { stiffness: 150, damping: 12 } });
+
+    const glowPulse = 0.7 + Math.sin(frame / 10) * 0.3;
+    const sendPulse = 1 + Math.sin(frame / 6) * 0.05;
+    const sendGlow = 0.6 + Math.sin(frame / 5) * 0.4;
+    const coverFloat = Math.sin(frame / 20) * 6;
+    const tiltX = Math.sin(frame / 25) * 4;
+    const tiltY = Math.cos(frame / 30) * 3;
+    const borderAngle = (frame * 5) % 360;
+    const arrowBounce = Math.sin(frame / 8) * 12;
+    const exitOpacity = interpolate(frame, [190, 205], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    const zoomScale = interpolate(frame, [0, 15], [1.3, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+
+    const sparks = Array.from({ length: 8 }, (_, i) => {
+        const angle = ((frame * 3 + i * 45) % 360) * (Math.PI / 180);
+        const radius = 340 + Math.sin(frame / 10 + i) * 15;
+        return { x: Math.cos(angle) * radius, y: Math.sin(angle) * radius, size: 4 + (i % 3) * 2, opacity: 0.5 + Math.sin(frame / 8 + i) * 0.4 };
+    });
+
+    const risingParticles = Array.from({ length: 20 }, (_, i) => {
+        const speed = 1.5 + (i % 4) * 0.5;
+        const baseY = 100 - ((frame * speed + i * 30) % 130);
+        return { x: 8 + (i * 47) % 84, y: baseY, size: 2 + (i % 3) * 2, opacity: interpolate(baseY, [-10, 10, 70, 100], [0, 0.4, 0.4, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) };
+    });
+
+    const eqBars = Array.from({ length: 24 }, (_, i) => ({
+        height: 25 + Math.sin(frame / (3 + i * 0.4) + i * 0.7) * 20 + Math.cos(frame / (5 + i * 0.3)) * 12,
+        opacity: 0.35 + Math.sin(frame / (4 + i)) * 0.2
+    }));
+
+    return (
+        <AbsoluteFill style={{ background: "#000", filter: `blur(${interpolate(entranceSpring, [0, 1], [20, 0])}px)`, opacity: exitOpacity, transform: `scale(${zoomScale})` }}>
+            {/* Blurred cover background */}
+            <AbsoluteFill style={{ opacity: coverSpring * 0.35, filter: "blur(60px) saturate(1.5)", transform: "scale(1.3)" }}>
+                <Img src={staticFile("cover.png")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </AbsoluteFill>
+
+            {/* Dark overlay */}
+            <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.85) 100%)" }} />
+
+            {/* Light rays */}
+            <AbsoluteFill style={{ background: `conic-gradient(from ${frame * 1.5}deg at 50% 40%, transparent 0deg, rgba(127,255,0,0.08) 20deg, transparent 40deg, rgba(127,255,0,0.05) 100deg, transparent 160deg, rgba(127,255,0,0.06) 240deg, transparent 300deg)`, opacity: entranceSpring * 0.8 }} />
+
+            {/* Central glow */}
+            <div style={{ position: "absolute", top: "25%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, rgba(127,255,0,${0.25 * glowPulse}) 0%, rgba(127,255,0,0.08) 40%, transparent 70%)`, filter: "blur(40px)" }} />
+
+            {/* Rising particles */}
+            {risingParticles.map((p, i) => (
+                <div key={`rp-${i}`} style={{ position: "absolute", left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, borderRadius: "50%", background: i % 3 === 0 ? COLORS.primary : "rgba(255,255,255,0.6)", opacity: p.opacity * entranceSpring, boxShadow: i % 3 === 0 ? `0 0 ${p.size * 4}px ${COLORS.primary}` : `0 0 ${p.size * 2}px rgba(255,255,255,0.3)` }} />
+            ))}
+
+            {/* ===== MAIN LAYOUT ===== */}
+            <AbsoluteFill style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 0, paddingBottom: 80 }}>
+
+                {/* COVER ART — Hero */}
+                <div style={{ position: "relative", transform: `translateY(${coverFloat}px) perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${interpolate(coverSpring, [0, 1], [0.5, 1])})`, opacity: coverSpring, marginBottom: 50 }}>
+                    {/* Orbiting Sparks */}
+                    {sparks.map((spark, i) => (
+                        <div key={`s-${i}`} style={{ position: "absolute", left: "50%", top: "50%", width: spark.size, height: spark.size, borderRadius: "50%", background: COLORS.primary, opacity: spark.opacity * coverSpring, transform: `translate(${spark.x}px, ${spark.y}px) translate(-50%, -50%)`, boxShadow: `0 0 ${spark.size * 4}px ${COLORS.primary}, 0 0 ${spark.size * 8}px rgba(127,255,0,0.3)`, zIndex: 10 }} />
+                    ))}
+
+                    {/* Outer glow */}
+                    <div style={{ position: "absolute", inset: -30, background: `radial-gradient(circle, rgba(127,255,0,${0.4 * glowPulse}) 0%, transparent 70%)`, borderRadius: 40, filter: "blur(30px)" }} />
+
+                    {/* Cover glass frame */}
+                    <div style={{ position: "relative", padding: 10, background: "linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 50%, rgba(127,255,0,0.1) 100%)", borderRadius: 28, border: `2px solid rgba(127,255,0,${0.4 + glowPulse * 0.3})`, boxShadow: `0 40px 80px rgba(0,0,0,0.6), 0 0 60px rgba(127,255,0,${0.25 * glowPulse}), inset 0 1px 0 rgba(255,255,255,0.25)`, backdropFilter: "blur(20px)", overflow: "hidden" }}>
+                        {/* Rotating border light */}
+                        <div style={{ position: "absolute", width: 50, height: 50, borderRadius: "50%", background: `radial-gradient(circle, ${COLORS.primary} 0%, transparent 70%)`, filter: "blur(8px)", top: `${50 + Math.sin(borderAngle * Math.PI / 180) * 52}%`, left: `${50 + Math.cos(borderAngle * Math.PI / 180) * 52}%`, transform: "translate(-50%, -50%)", opacity: 0.9, zIndex: 20, pointerEvents: "none" }} />
+
+                        <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 10px 40px rgba(0,0,0,0.5)" }}>
+                            <Img src={staticFile("cover.png")} style={{ width: 500, height: 500, objectFit: "cover" }} />
+                        </div>
+
+                        {/* Glass shine */}
+                        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%)", borderRadius: "28px 28px 0 0", pointerEvents: "none" }} />
+                    </div>
+
+                    {/* Mirror reflection */}
+                    <div style={{ marginTop: 6, borderRadius: 20, overflow: "hidden", transform: "scaleY(-1)", height: 60, opacity: 0.12, maskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)" }}>
+                        <Img src={staticFile("cover.png")} style={{ width: 500, height: 500, objectFit: "cover", borderRadius: 20 }} />
+                    </div>
+                </div>
+
+                {/* TEXT — Below Cover */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, transform: `translateY(${interpolate(textSpring, [0, 1], [50, 0])}px)` }}>
+                    {/* 👥 MARQUE */}
+                    <div style={{ opacity: textSpring, fontSize: 42, fontWeight: 400, color: "rgba(255,255,255,0.85)", fontFamily: FONTS.body, letterSpacing: 4, textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}>
+                        {t.ctaLine1}
+                    </div>
+
+                    {/* "2 AMIGOS RAPPERS" */}
+                    <div style={{ position: "relative", transform: `scale(${interpolate(sendSpring, [0, 1], [0.3, 1]) * sendPulse})`, opacity: sendSpring }}>
+                        <div style={{ position: "absolute", inset: "-20px -50px", background: `radial-gradient(ellipse, rgba(127,255,0,${0.3 * sendGlow}) 0%, transparent 70%)`, filter: "blur(20px)" }} />
+                        <div style={{ position: "relative", fontSize: 80, fontWeight: 400, color: COLORS.primary, fontFamily: FONTS.headline, letterSpacing: 4, lineHeight: 1.1, textAlign: "center", textShadow: `0 0 30px ${COLORS.primary}, 0 0 60px ${COLORS.primary}, 0 0 120px rgba(127,255,0,0.5), 0 4px 30px rgba(0,0,0,0.8)` }}>
+                            {t.ctaLine2.split("\n").map((line: string, i: number) => <React.Fragment key={i}>{i > 0 && "\n"}{line}</React.Fragment>)}
+                        </div>
+                    </div>
+
+                    {/* PARA RECEBER O PACK */}
+                    <div style={{ fontSize: 34, fontWeight: 600, color: "rgba(255,255,255,0.8)", fontFamily: FONTS.body, letterSpacing: 6, opacity: subSpring, transform: `translateY(${interpolate(subSpring, [0, 1], [20, 0])}px)`, textShadow: "0 2px 15px rgba(0,0,0,0.5)", textAlign: "center" }}>
+                        {t.ctaLine3}
+                    </div>
+
+                    {/* Animated arrow */}
+                    <div style={{ marginTop: 20, opacity: arrowSpring * (0.6 + Math.sin(frame / 8) * 0.4), transform: `translateY(${arrowBounce}px) scale(${interpolate(arrowSpring, [0, 1], [0, 1])})` }}>
+                        <div style={{ width: 50, height: 50, borderLeft: `3px solid ${COLORS.primary}`, borderBottom: `3px solid ${COLORS.primary}`, transform: "rotate(-45deg)", filter: `drop-shadow(0 0 8px ${COLORS.primary})` }} />
+                    </div>
+                </div>
+            </AbsoluteFill>
+
+            {/* EQ Bars */}
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 70, display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 3, padding: "0 30px", zIndex: 4, opacity: entranceSpring * 0.4 }}>
+                {eqBars.map((bar, i) => (
+                    <div key={`eq-${i}`} style={{ width: `${100 / 24}%`, height: bar.height, background: `linear-gradient(180deg, ${COLORS.primary} 0%, rgba(127,255,0,0.15) 100%)`, borderRadius: "3px 3px 0 0", opacity: bar.opacity, boxShadow: "0 0 6px rgba(127,255,0,0.15)" }} />
+                ))}
+            </div>
+        </AbsoluteFill>
+    );
+};
+
+
+// =====================
 // SEGMENT: VIDEO CONTENT COUNTER
 // =====================
-const VideoContentCounter: React.FC<{ count: string; label: string; subLabel?: string; videoSrc: string }> = ({ count, label, subLabel, videoSrc }) => {
+const VideoContentCounter: React.FC<{ count: string; label: string; subLabel?: string; videoSrc: string; t: Translations }> = ({ count, label, subLabel, videoSrc, t }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
@@ -1447,7 +1425,7 @@ const VideoContentCounter: React.FC<{ count: string; label: string; subLabel?: s
 
     const glowPulse = 0.7 + Math.sin(frame / 12) * 0.3;
     const floatY = Math.sin(frame / 18) * 5;
-    const exitBlur = interpolate(frame, [180, 205], [0, 30], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    const exitBlur = interpolate(frame, [190, 205], [0, 30], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
     // 1. White flash on entrance
     // 1. White flash removed
@@ -1548,6 +1526,47 @@ const VideoContentCounter: React.FC<{ count: string; label: string; subLabel?: s
             {/* Main Content: Card on top, Video below */}
             <AbsoluteFill className="flex flex-col items-center justify-center" style={{ gap: 40 }}>
 
+                {/* Persuasive Copy at Top */}
+                <div style={{
+                    position: "absolute",
+                    top: 100,
+                    left: 0,
+                    right: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 8,
+                    zIndex: 20,
+                }}>
+                    <div style={{
+                        fontSize: 32,
+                        fontWeight: 400,
+                        color: COLORS.primary,
+                        letterSpacing: 8,
+                        textTransform: "uppercase",
+                        fontFamily: FONTS.body,
+                        textShadow: `0 0 20px ${COLORS.primary}`,
+                        opacity: spring({ frame: frame - 8, fps, config: { stiffness: 100, damping: 14 } }),
+                        transform: `translateY(${interpolate(spring({ frame: frame - 8, fps, config: { stiffness: 100, damping: 14 } }), [0, 1], [-20, 0])}px)`,
+                    }}>
+                        {t.exclusiveLabel}
+                    </div>
+                    <div style={{
+                        fontSize: 52,
+                        fontWeight: 400,
+                        color: COLORS.text,
+                        fontFamily: FONTS.headline,
+                        textAlign: "center",
+                        lineHeight: 1.1,
+                        textShadow: `0 0 40px ${COLORS.primary}, 0 0 80px rgba(127,255,0,0.3), 0 4px 20px rgba(0,0,0,0.8)`,
+                        opacity: spring({ frame: frame - 14, fps, config: { stiffness: 80, damping: 12 } }),
+                        transform: `translateY(${interpolate(spring({ frame: frame - 14, fps, config: { stiffness: 80, damping: 12 } }), [0, 1], [30, 0])}px)`,
+                        padding: "0 60px",
+                    }}>
+                        {t.produceMusic.split("\n").map((line: string, i: number) => <React.Fragment key={i}>{i > 0 && "\n"}{line}</React.Fragment>)}
+                    </div>
+                </div>
+
                 {/* Glass Card with Counter */}
                 <div style={{
                     position: "relative",
@@ -1632,7 +1651,7 @@ const VideoContentCounter: React.FC<{ count: string; label: string; subLabel?: s
                             transform: `scale(${interpolate(badgeSpring, [0, 1], [0, 1])})`,
                             zIndex: 30
                         }}>
-                            🔥 EXCLUSIVE
+                            {t.exclusive}
                         </div>
 
                         {/* 7. Count with massive glow */}
@@ -1776,39 +1795,28 @@ const VideoContentCounter: React.FC<{ count: string; label: string; subLabel?: s
 // =====================
 // MAIN COMPOSITION
 // =====================
-export const BeatsMotionCreatives = () => {
+export const BeatsMotionCreatives: React.FC<{ lang?: Lang }> = ({ lang = "en" }) => {
+    const t = TRANSLATIONS[lang];
     return (
         <AbsoluteFill style={{ backgroundColor: "black", fontFamily: FONTS.body }}>
-            {/* Segment 1: Cover Showcase (4s) */}
-            <Sequence durationInFrames={120}>
-                <CoverShowcase />
+            {/* Segment 1: Cover Showcase (5s) */}
+            <Sequence durationInFrames={150}>
+                <CoverShowcase t={t} />
             </Sequence>
 
             {/* Segment 2: +10 Beats with Video (7s) */}
-            <Sequence from={110} durationInFrames={210}>
-                <VideoContentCounter count="+10" label="BEATS" subLabel="High Quality & Rare" videoSrc="wave.mp4" />
+            <Sequence from={150} durationInFrames={210}>
+                <VideoContentCounter count="+10" label={t.beatsLabel} subLabel={t.beatsSubLabel} videoSrc="wave.mp4" t={t} />
             </Sequence>
 
-            {/* Segment 3: Folder List (7s) */}
-            <Sequence from={310} durationInFrames={210}>
-                <FolderList />
+            {/* Segment 3: Folder List (6s) */}
+            <Sequence from={360} durationInFrames={180}>
+                <FolderList t={t} />
             </Sequence>
 
-            <Sequence from={510} durationInFrames={75}>
-                <ContentCounter count="50+" label="DRUM LOOPS" subLabel="Drag & Drop Ready" />
-            </Sequence>
-
-            <Sequence from={580} durationInFrames={75}>
-                <ContentCounter count="20" label="808 PATTERNS" subLabel="BPM Synced" />
-            </Sequence>
-
-            <Sequence from={650} durationInFrames={75}>
-                <ContentCounter count="10+" label="BEATS" subLabel="High Quality & Rare" />
-            </Sequence>
-
-            {/* Segment 7: CTA */}
-            <Sequence from={720} durationInFrames={95}>
-                <CTASection />
+            {/* Segment 4: CTA (7s) */}
+            <Sequence from={540} durationInFrames={210}>
+                <CTASection t={t} />
             </Sequence>
         </AbsoluteFill>
     );
